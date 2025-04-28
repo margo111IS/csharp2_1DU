@@ -20,7 +20,6 @@ namespace Archery
             }
             _arrowCount--;
             Console.WriteLine("Arrow has been fired.");
-            return;
         }
 
         public void AddArrows(int count)
@@ -30,7 +29,6 @@ namespace Archery
                 _arrowCount += count;
                 Console.WriteLine($"{count} arrows has been added.");
             }
-            return;
         }
 
         public void ShowState()

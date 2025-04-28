@@ -4,67 +4,87 @@ public class Program
 {
     public static void Main()
     {
+        int number = 0;
         var archer = new Archer("Archer1", 2);
         while (true)
         {
+            bool flag = true;
             archer.ShowState();
-            Console.WriteLine("Choose an option:");
-            try
+
+            while (flag)
             {
-                Console.WriteLine("1. Fire arrow \n2. Add arrows \n3. End");
-                Console.Write("Option: ");
-                string? option = Console.ReadLine();
-                int number = int.Parse(option);
-                if (number != null && number > 0)
+                try
                 {
-                    switch (number)
+                    Console.WriteLine("Choose an option:");
+                    Console.WriteLine("1. Fire arrow \n2. Add arrows \n3. End");
+                    Console.Write("Option: ");
+                    number = int.Parse(Console.ReadLine());
+                    if (number < 1 || number > 3)
                     {
-                        case 1:
-                            archer.Fire();
-                            break;
-
-                        case 2:
-                            int result;
-                            while (true)
-                            {
-                                Console.Write("Write a valid number of arrows to add: ");
-                                string count = Console.ReadLine();
-                                result = Program.ReadWholeNumberFromConsole(count);
-                                if (result >= 0)
-                                {
-                                    archer.AddArrows(result);
-                                    break;
-                                }
-                            }
-                            break;
-
-                        case 3:
-                            return;
+                        Console.WriteLine("Invalid option! Try again.");
+                    }
+                    else
+                    {
+                        flag = false;
                     }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-            catch (Exception e)
+            
+            switch (number)
             {
-                Console.WriteLine(e.Message);
+                case 1:
+                    archer.Fire();
+                    break;
+
+                case 2:
+                    Console.Write("Write a valid number of arrows to add: ");
+                    ReadWholeNumberFromConsole(Console.ReadLine(), archer);
+                    break;
+
+                case 3:
+                    return;
+
+                default:
+                    Console.WriteLine("\nInvalid option! Try again.");
+                    break;
             }
         }
     }
 
-    public static int ReadWholeNumberFromConsole(string call)
+
+    public static void ReadWholeNumberFromConsole(string call, Archer archer)
     {
-        if (int.TryParse(call, out int input))
+        bool flag = true;
+        while (flag)
         {
-            if (input >= 0)
+            if (int.TryParse(call, out int input))
             {
-                return input;
+                if (input >= 0)
+                {
+                    archer.AddArrows(input);
+                    flag = false;
+                }
+                else
+                {
+                    Console.WriteLine("The given number is less than zero! Try again.");
+                }
             }
-            Console.WriteLine("The given number is less than zero! Try again.");
-            return -1;
-        }
-        else
-        {
-            Console.WriteLine("The given number is not valid! Try again.");
-            return -1;
+            else
+            {
+                Console.WriteLine("The given number is not valid! Try again.");
+
+            }
+
+            if (flag)
+            {
+                Console.Write("Write a valid number of arrows to add: ");
+                call = Console.ReadLine();
+            }
         }
     }
 }
+
